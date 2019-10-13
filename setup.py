@@ -42,7 +42,7 @@ setup(
         'Programming Language :: Python :: 3.7',
     ],
     keywords='google parse crawler',
-    packages=['requests_google'],
+    packages=find_packages(),
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4',
     install_requires=REQUIRED,
     entry_points={
