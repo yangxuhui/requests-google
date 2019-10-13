@@ -6,7 +6,7 @@ requests_google.api
 import feedparser
 import requests
 
-from .utils import get_google_news_location_news_rss_url
+from .utils import get_location_url
 
 
 def _gen_item(item):
@@ -18,8 +18,8 @@ def _gen_item(item):
     }
 
 
-def get_google_news_location_news(city, state):
-    """Get news of a location from google news.
+def get_location_googlenews(city, state):
+    """Generate google news for a given location.
 
     Parameters
     ----------
@@ -28,15 +28,10 @@ def get_google_news_location_news(city, state):
     state : string
         state name
     """
-    url = get_google_news_location_news_rss_url(city, state)
+    url = get_location_url(city, state)
     r = requests.get(url)
     if r.status_code != 200:
         raise RuntimeError('requests status_code={}'.format(status_code))
     d = feedparser.parse(r.text)
-    result = {}
-    result['title'] = d.feed.title
-    result['link'] = d.feed.link
-    result['description'] = d.feed.description
-    # result['published'] = d.feed.published
-    result['items'] = [_gen_item(item) for item in d.entries]
+    result = [_gen_item(item) for item in d.entries]
     return result

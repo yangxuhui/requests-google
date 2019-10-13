@@ -4,19 +4,21 @@ import argparse
 import json
 import sys
 
-from ..api import get_google_news_location_news
+from ..api import get_location_googlenews
+
+FIELDS = ['title', 'link']
 
 
 def execute(args):
-    if args.search_for == 'locations':
-        if (not args.city) or (not args.state):
-            sys.stderr.write('no city or state\n')
-            exit(1)
-        result = get_google_news_location_news(args.city, args.state)
-    if args.output == 'item_link':
-        for item in result['items']:
-            print(item['link'])
-
+    if args.location:
+        city, state = args.location
+        result = get_location_googlenews(city, state)
+    if args.fields:
+        d = args.d
+        for item in result:
+            print(d.join([item[field] for field in args.fields]))
+    else:
+        print(json.dumps(result))
 
 
 def main():
@@ -25,12 +27,14 @@ def main():
         description='A command line tool for parsing google news'
     )
 
-    parser.add_argument('--search_for', default='locations',
-                        help='Search for topics, locations & sources')
-    parser.add_argument('--city', help='City name')
-    parser.add_argument('--state', help='State name')
-    parser.add_argument('--output', default='item_link',
-                        help='Output control')
+    parser.add_argument('-g', '--location', nargs=2, metavar=('city', 'state'),
+                        help='geographic location')
+    parser.add_argument('-d', metavar='delim', default='\t',
+                        help='field delimiter character (default: tab)')
+    parser.add_argument('-f', '--fields', nargs='+', 
+                        metavar=('field1', 'field2'), choices=FIELDS,
+                        help=('list of output fields, separated by the ' + 
+                              'field delimiter character (see the -d option)'))
 
     args = parser.parse_args()
     execute(args)

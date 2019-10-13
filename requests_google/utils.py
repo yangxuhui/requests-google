@@ -5,8 +5,10 @@ requests_google.utils
 
 import urllib
 
+URL_LOCATION = "https://news.google.com/news/rss/headlines/section/geo/{location}"
 
-def get_google_news_location_news_rss_url(city, state):
-    base = 'https://news.google.com/news/rss/local/section/geo/'
-    location = '{}, {}, United States/'.format(city, state)
-    return base + urllib.quote_plus(location) 
+
+def get_location_url(city, state):
+    """Generate url for the given location"""
+    location = '{}, {}, {}'.format(city, state, 'United States')
+    return URL_LOCATION.format(location=urllib.quote_plus(location))
