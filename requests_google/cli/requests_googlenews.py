@@ -34,7 +34,8 @@ def main():
     parser.add_argument('-f', '--fields', nargs='+', 
                         metavar=('field1', 'field2'), choices=FIELDS,
                         help=('list of output fields, separated by the ' + 
-                              'field delimiter character (see the -d option)'))
+                              'field delimiter character (see the -d option).' +
+                              ' Allowed fields are: ' + ', '.join(FIELDS)))
 
     args = parser.parse_args()
     execute(args)
