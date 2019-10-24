@@ -22,7 +22,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='requests-google',
-    version='0.0.3',
+    version='0.0.4',
     description='A simple google related Parsing Package.',
     long_description=long_description,
     long_description_content_type='text/markdown',
