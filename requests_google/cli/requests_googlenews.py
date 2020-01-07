@@ -4,19 +4,19 @@ import argparse
 import json
 import sys
 
-from ..api import get_location_googlenews
+from ..googlenews import get_news_by_geolocation
 
-FIELDS = ['title', 'link']
+FIELDS = ['title', 'url', 'description']
 
 
 def execute(args):
-    if args.location:
+    if args.geolocation:
         city, state = args.location
-        result = get_location_googlenews(city, state)
+        result = get_news_by_geolocation(city, state)
     if args.fields:
         d = args.d
         for item in result:
-            print(d.join([item[field] for field in args.fields]))
+            print(d.join([getattr(item, field) for field in args.fields]))
     else:
         print(json.dumps(result))
 
@@ -27,7 +27,7 @@ def main():
         description='A command line tool for parsing google news'
     )
 
-    parser.add_argument('-g', '--location', nargs=2, metavar=('city', 'state'),
+    parser.add_argument('-g', '--geolocation', nargs=2, metavar=('city', 'state'),
                         help='geographic location')
     parser.add_argument('-d', metavar='delim', default='\t',
                         help='field delimiter character (default: tab)')
