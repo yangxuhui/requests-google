@@ -11,7 +11,7 @@ FIELDS = ['title', 'url', 'description']
 
 def execute(args):
     if args.geolocation:
-        city, state = args.location
+        city, state = args.geolocation
         result = get_news_by_geolocation(city, state)
     if args.fields:
         d = args.d
