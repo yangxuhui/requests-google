@@ -18,7 +18,7 @@ def execute(args):
         for item in result:
             print(d.join([getattr(item, field) for field in args.fields]))
     else:
-        print(json.dumps(result))
+        print(json.dumps([item._asdict() for item in result]))
 
 
 def main():
